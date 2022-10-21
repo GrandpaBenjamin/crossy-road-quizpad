@@ -56,6 +56,7 @@ export default class Generic {
   getRandom = () => {
     let keys = Object.keys(this.models);
     const key = keys[(keys.length * Math.random()) << 0];
+    console.log(key)
     return this.models[key].clone();
   };
 

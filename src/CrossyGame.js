@@ -245,6 +245,7 @@ export class CrossyGameMap extends GameMap {
 
     switch (rowKind) {
       case 'grass':
+        
         this.grasses.items[this.grasses.count].position.z = this.rowCount;
         this.grasses.items[this.grasses.count].generate(
           this.mapRowToObstacle(this.rowCount),

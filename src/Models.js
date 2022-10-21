@@ -150,18 +150,23 @@ export default {
       model: require('../assets/models/characters/brent/0.obj'),
       texture: require('../assets/models/characters/brent/0.png'),
     },
-    // chicken: {
-    //   model: require('../assets/models/characters/chicken/0.obj'),
-    //   texture: require('../assets/models/characters/chicken/0.png'),
-    // },
+    chicken: {
+      model: require('../assets/models/characters/chicken/0.obj'),
+      texture: require('../assets/models/characters/chicken/0.png'),
+    },
     avocoder: {
       model: require('../assets/models/characters/avocoder/avocoder.obj'),
       texture: require('../assets/models/characters/avocoder/avocoder.png'),
     },
     bacon: {
+      model: require('../assets/models/characters/chicken/0.obj'),
+      texture: require('../assets/models/characters/chicken/0.png'),
+    },
+      /*
       model: require('../assets/models/characters/bacon/bacon.obj'),
       texture: require('../assets/models/characters/bacon/bacon.png'),
     },
+    */
     wheeler: {
       model: require('../assets/models/characters/wheeler/wheeler.obj'),
       texture: require('../assets/models/characters/wheeler/wheeler.png'),
@@ -174,5 +179,13 @@ export default {
       model: require('../assets/models/characters/juwan/juwan.obj'),
       texture: require('../assets/models/characters/juwan/juwan.png'),
     },
-  }
+  },
+  alphabet: {
+    letters: {
+      0: {
+        model: require('../assets/models/letters/a/0.obj'),
+        texture: require('../assets/models/letters/a/0.png'),
+      }
+    },
+  },
 }

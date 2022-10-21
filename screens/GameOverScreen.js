@@ -15,11 +15,12 @@ import Images from "../src/Images";
 const banner = [
   {
     color: "#3640eb",
-    title: "Get Updates Subscribe Now",
+    title: "phil knows all",
+    /*
     button: {
       onPress: (_) => {
         Alert.alert(
-          "Subscribe to our mailing list",
+          "Phil knows all",
           "Join our mailing list and discover the latest news from Expo and Evan Bacon.\n\n Read our privacy policy on https://github.com/EvanBacon/Expo-Crossy-Road/privacy.md",
           [
             { text: "Cancel", onPress: () => console.log("Cancel Pressed!") },
@@ -32,15 +33,15 @@ const banner = [
       },
       source: Images.button.mail,
       style: { aspectRatio: 1.85, height: 40 },
-    },
+    },*/
   },
   {
     color: "#368FEB",
-    title: "Free Gift in 2h 51m",
+    title: "SHACO smurf",
   },
   {
     color: "#36D6EB",
-    title: "44 Coins To Go",
+    title: "hardstuck iron IV",
   },
 ];
 

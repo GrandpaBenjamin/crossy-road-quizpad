@@ -10,7 +10,7 @@ import Images from '../src/Images';
 // import connectCharacter from '../../utils/connectCharacter';
 class CharacterSelect extends Component {
   state = {
-    currentIndex: 0,
+    currentIndex: 0, //seems to control which character is loaded but i havnt gotten it working --thom
     characters: Object.keys(Characters).map(val => Characters[val]),
   };
   dismiss = () => {
@@ -38,7 +38,7 @@ class CharacterSelect extends Component {
         dialogTitle: 'Share Bouncy Bacon',
         excludedActivityTypes: [
           'com.apple.UIKit.activity.AirDrop', // This speeds up showing the share sheet by a lot
-          'com.apple.UIKit.activity.AddToReadingList', // This is just lame :)
+          'com.apple.UIKit.activity.AddToReadingList', // This is just lame :) (lmao - thom)
         ],
         tintColor: Colors.blue,
       },

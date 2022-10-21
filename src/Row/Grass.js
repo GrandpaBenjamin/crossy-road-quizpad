@@ -3,6 +3,8 @@ import { Object3D } from 'three';
 import ModelLoader from '../../src/ModelLoader';
 import { groundLevel } from '../GameSettings';
 
+import { questionType, currentLetter} from '../quizManager';
+
 export const Fill = {
   empty: 'empty',
   solid: 'solid',
@@ -12,6 +14,7 @@ export const Fill = {
 const HAS_WALLS = true;
 const HAS_OBSTACLES = true;
 const HAS_VARIETY = true;
+const HAS_LETTERS = true;
 
 export default class Grass extends Object3D {
   active = false;
@@ -41,7 +44,7 @@ export default class Grass extends Object3D {
 
   obstacleMap = {};
   addObstacle = x => {
-    let mesh;
+    let mesh; //  IMPORTANT OBJECT SPAWNING LOCATION
     if (HAS_VARIETY) {
       mesh =
         Math.random() < 0.4
@@ -56,14 +59,26 @@ export default class Grass extends Object3D {
     mesh.position.set(x, groundLevel, 0);
   };
 
+  spawnLetter = (letter,x) => {
+    let mesh; //  IMPORTANT OBJECT SPAWNING LOCATION
+    mesh = ModelLoader._letter.getLetter(currentLetter);
+    this.obstacleMap[`${x | 0}`] = { index: this.entities.length };
+    this.entities.push({ mesh });
+    this.floor.add(mesh);
+    mesh.position.set(x, groundLevel, 0);
+  };
+
   treeGen = type => {
     // 0 - 8
+    var usedSlots = [];;
     let _rowCount = 0;
     const count = Math.round(Math.random() * 2) + 1;
     for (let x = -3; x < 12; x++) {
       const _x = x - 4;
+      
       if (type === Fill.solid) {
         this.addObstacle(_x);
+        usedSlots.push(_x);
         continue;
       }
 
@@ -71,6 +86,7 @@ export default class Grass extends Object3D {
         /// Walls
         if (x >= 9 || x <= -1) {
           this.addObstacle(_x);
+          usedSlots.push(_x);
           continue;
         }
       }
@@ -79,9 +95,24 @@ export default class Grass extends Object3D {
         if (_rowCount < count) {
           if (_x !== 0 && Math.random() > 0.6) {
             this.addObstacle(_x);
+            usedSlots.push(_x);
             _rowCount++;
           }
         }
+      }  
+    }
+    
+    if (HAS_LETTERS) {
+      console.log(usedSlots);
+      var spawnLocation = Math.floor(Math.random() * 12)+-7;
+      console.log(spawnLocation)
+      /*
+      while (usedSlots.includes(spawnLocation)){
+        spawnLocation = Math.floor(Math.random()*12)+-7;
+      }
+      */
+      if (spawnLocation !== 0) {
+          this.spawnLetter(currentLetter,spawnLocation);
       }
     }
   };
