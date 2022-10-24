@@ -36,15 +36,20 @@ export default class Letter extends Generic {
       alphabet: { letters },
     } = this.globalModels;
     console.log(letters);
-    for (let i = 0; i < 1; i++) { //change 1 to 26 when all letter objects have been made
+    for (let i = 0; i < 35; i++) { //change 1 to 26 when all letter objects have been made
       await this._register(`${i}`, {
         ...letters[`${i}`],
-        castShadow: false,
+        castShadow: true,
         receiveShadow: false,
       });
     }
     return this.models;
   };
 
-   getLetter(letter) { return this.models[letterToInt[letter]].clone() }
+   getLetter(letter) {
+    let letterID = parseInt(letterToInt[letter]);
+    //console.log(`letterID ${letterID}`);
+    let moodel = this.models[letterID];
+    return moodel.clone();
+  };
 }

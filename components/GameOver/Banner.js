@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     color: 'white',
-    fontFamily: 'retro',
+    fontFamily: 'retro_menu',
     textAlign: 'center',
   },
   banner: {

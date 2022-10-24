@@ -25,7 +25,41 @@ export const letterToInt = {
     "x": 23,
     "y": 24,
     "z": 25,
+    "1": 26,
+    "2": 27,
+    "3": 28,
+    "4": 29,
+    "5": 30,
+    "6": 31,
+    "7": 32,
+    "8": 33,
+    "9": 34,
 }
 
-export var questionType = null;
-export var currentLetter = "a";
+export var questionType = "multipleChoice";
+export var currentLetterIndex = 0;
+export var currentWord = "123";//"balls";
+export var question = "What is a+b?";
+export var answer = "two";
+export var choice = null;
+
+export function increaseCLI(byWhat){
+    currentLetterIndex+=byWhat;
+}
+
+export function resetProgress(){
+    currentLetterIndex = 0;
+    console.log("resetted");
+}
+
+export function getCurrentLetter(){
+    if (currentLetterIndex >= currentWord.length){
+        return -1
+    }else{
+        return currentWord[currentLetterIndex]
+    }
+}
+
+export function setChoice(data){
+    choice = data;
+}

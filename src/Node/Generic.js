@@ -33,6 +33,7 @@ export default class Generic {
   };
 
   _downloadAssets = async ({
+    scale,
     name,
     model,
     texture,
@@ -42,7 +43,11 @@ export default class Generic {
     const material = CrossyMaterial.load(texture);
 
     const _model = await loadObjAsync({ asset: model });
-
+    if (scale != undefined){
+      _model.scale.setScalar(scale);
+      _model.rotation.set(0,Math.PI,0);
+    }
+    //_model.scale.setScalar(0.5); //uncomment for funny godzilla quizzyRoad -thom
     _model.traverse((child) => {
       if (child instanceof Mesh) {
         child.material = material;
@@ -56,7 +61,6 @@ export default class Generic {
   getRandom = () => {
     let keys = Object.keys(this.models);
     const key = keys[(keys.length * Math.random()) << 0];
-    console.log(key)
     return this.models[key].clone();
   };
 

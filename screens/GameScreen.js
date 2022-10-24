@@ -8,6 +8,7 @@ import {
   Vibration,
   View,
   useColorScheme,
+  Text,
 } from "react-native";
 
 import GestureRecognizer, { swipeDirections } from "../components/GestureView";
@@ -18,6 +19,22 @@ import GameOverScreen from "./GameOverScreen";
 import HomeScreen from "./HomeScreen";
 import SettingsScreen from "./SettingsScreen";
 import GameContext from "../context/GameContext";
+
+import { globalVars } from "../src/GlobalVars";
+import { answer, question } from "../src/quizManager";
+
+function getTextWidth(text){
+  let widthConstant = 30;
+  return widthConstant*text.length;
+}
+
+//dw bout this... had to copy it from ScoreText.js but its fine
+function generateTextShadow(width) {
+  return  Platform.select({ web: {
+    textShadow: `-${width}px 0px 0px #000, ${width}px 0px 0px #000, 0px -${width}px 0px #000, 0px ${width}px 0px #000`
+  }, default: {} });
+} 
+const textShadow = generateTextShadow(4)
 
 const DEBUG_CAMERA_CONTROLS = false;
 class Game extends Component {
@@ -143,6 +160,7 @@ class Game extends Component {
     this.engine.onUpdateScore = (position) => {
       if (this.state.score < position) {
         this.setState({ score: position });
+        globalVars["score"] = this.state.score;
       }
     };
     this.engine.onGameInit = () => {
@@ -171,13 +189,14 @@ class Game extends Component {
 
   renderGame = () => {
     if (!this.state.ready) return;
-
+    //<p style={{"textAlign": "center","fontSize":20}}>{question}</p>
     return (
       <GestureView
         pointerEvents={DEBUG_CAMERA_CONTROLS ? "none" : undefined}
         onStartGesture={this.engine.beginMoveWithDirection}
         onSwipe={this.onSwipe}
       >
+        
         <GLView
           style={{ flex: 1, height: "100%", overflow: "hidden" }}
           onContextCreate={this.engine._onGLContextCreate}
@@ -254,6 +273,12 @@ class Game extends Component {
           score={this.state.score}
           gameOver={this.state.gameState === State.Game.gameOver}
         />
+        <View pointerEvents="none" style={[styles.container]}>
+          <Text style={[styles.question, textShadow]}>{question}</Text>
+        </View>
+        <View pointerEvents="none" style={[styles_sub.container]}>
+          <Text style={[styles_sub.answer, textShadow]}>{"1) "+answer}</Text>
+        </View>
         {this.renderGameOver()}
 
         {this.renderHomeScreen()}
@@ -311,5 +336,48 @@ function GameScreen(props) {
     <Game {...props} character={character} isDarkMode={scheme === "dark"} />
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    top:16,
+    marginLeft:"auto",
+    marginRight:"auto",
+    left:(Dimensions.get('window').width/2)-(getTextWidth(question)/2),
+  },
+  question: {
+    color: 'white',
+    fontFamily: 'retro',
+    fontSize: 45,
+    backgroundColor: 'transparent',
+    letterSpacing: '0.1em',
+  },
+  sub_question: {
+    color: 'white',
+    fontFamily: 'retro',
+    fontSize: 40,
+    marginTop: 16,
+    backgroundColor: 'transparent',
+    letterSpacing: '0.15em',
+  }
+})
+
+const styles_sub = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    top:48,
+    marginLeft:"auto",
+    marginRight:"auto",
+    left:(Dimensions.get('window').width/2)-(getTextWidth("1) "+answer)/2),
+  },
+  answer: {
+    color: 'indianred',
+    fontFamily: 'retro',
+    fontSize: 40,
+    marginTop: 16,
+    backgroundColor: 'transparent',
+    letterSpacing: '0.15em',
+  }
+})
 
 export default GameScreen;

@@ -36,20 +36,23 @@ export default function Score({ gameOver, score, ...props }) {
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
+    marginLeft:10,
   },
   
   score: {
     color: 'white',
-    fontFamily: 'retro',
+    fontFamily: 'retro_menu',
     fontSize: 48,
     backgroundColor: 'transparent',
+    
   },
   highscore: {
     color: 'yellow',
-    fontFamily: 'retro',
+    fontFamily: 'retro_menu',
     fontSize: 14,
-    marginTop: 4,
+    marginTop: 10,
     letterSpacing: -0.1,
     backgroundColor: 'transparent',
+    letterSpacing: '0.0em',
   }
 })

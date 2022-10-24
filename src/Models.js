@@ -183,9 +183,180 @@ export default {
   alphabet: {
     letters: {
       0: {
-        model: require('../assets/models/letters/a/0.obj'),
-        texture: require('../assets/models/letters/a/0.png'),
-      }
+        scale: 0.05,
+        model: require('../assets/models/letters/a.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      1: {
+        scale: 0.05,
+        model: require('../assets/models/letters/b.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      2: {
+        scale: 0.05,
+        model: require('../assets/models/letters/c.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      3: {
+        scale: 0.05,
+        model: require('../assets/models/letters/d.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      4: {
+        scale: 0.05,
+        model: require('../assets/models/letters/e.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      5: {
+        scale: 0.05,
+        model: require('../assets/models/letters/f.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      6: {
+        scale: 0.05,
+        model: require('../assets/models/letters/g.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      7: {
+        scale: 0.05,
+        model: require('../assets/models/letters/h.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      8: {
+        scale: 0.05,
+        model: require('../assets/models/letters/i.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      9: {
+        scale: 0.05,
+        model: require('../assets/models/letters/j.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      10: {
+        scale: 0.05,
+        model: require('../assets/models/letters/k.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      11: {
+        scale: 0.05,
+        model: require('../assets/models/letters/l.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      12: {
+        scale: 0.05,
+        model: require('../assets/models/letters/m.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      13: {
+        scale: 0.05,
+        model: require('../assets/models/letters/n.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      14: {
+        scale: 0.05,
+        model: require('../assets/models/letters/o.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      15: {
+        scale: 0.05,
+        model: require('../assets/models/letters/p.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      16: {
+        scale: 0.05,
+        model: require('../assets/models/letters/q.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      17: {
+        scale: 0.05,
+        model: require('../assets/models/letters/r.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      18: {
+        scale: 0.05,
+        model: require('../assets/models/letters/s.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      19: {
+        scale: 0.05,
+        model: require('../assets/models/letters/t.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      20: {
+        scale: 0.05,
+        model: require('../assets/models/letters/u.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      21: {
+        scale: 0.05,
+        model: require('../assets/models/letters/v.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      22: {
+        scale: 0.05,
+        model: require('../assets/models/letters/w.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      23: {
+        scale: 0.05,
+        model: require('../assets/models/letters/x.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      24: {
+        scale: 0.05,
+        model: require('../assets/models/letters/y.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      25: {
+        scale: 0.05,
+        model: require('../assets/models/letters/z.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      26: {
+        scale: 0.05,
+        model: require('../assets/models/letters/1.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      27: {
+        scale: 0.05,
+        model: require('../assets/models/letters/2.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      28: {
+        scale: 0.05,
+        model: require('../assets/models/letters/3.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      29: {
+        scale: 0.05,
+        model: require('../assets/models/letters/4.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      30: {
+        scale: 0.05,
+        model: require('../assets/models/letters/5.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      31: {
+        scale: 0.05,
+        model: require('../assets/models/letters/6.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      32: {
+        scale: 0.05,
+        model: require('../assets/models/letters/7.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      33: {
+        scale: 0.05,
+        model: require('../assets/models/letters/8.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },
+      34: {
+        scale: 0.05,
+        model: require('../assets/models/letters/9.obj'),
+        texture: require('../assets/models/letters/texture.png'),
+      },      
     },
   },
 }

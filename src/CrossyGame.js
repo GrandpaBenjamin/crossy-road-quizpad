@@ -140,8 +140,8 @@ export class CrossyRenderer extends Renderer {
   }
 
   setShadowsEnabled(enabled) {
-    this.gammaInput = enabled;
-    this.gammaOutput = enabled;
+    this.encoding = THREE.sRGBEncoding;
+    this.outputEncoding = THREE.sRGBEncoding;
     this.shadowMap.enabled = enabled;
   }
 }
@@ -160,7 +160,7 @@ export class GameMap {
     this.floorMap[`${index}`] = value;
   }
 
-  // Detect collisions with trees/cars
+  // Detect collisions with trees/cars [and also letters]
   treeCollision = position => {
     const targetZ = `${position.z | 0}`;
     if (targetZ in this.floorMap) {
@@ -169,6 +169,10 @@ export class GameMap {
         const key = `${position.x | 0}`;
         if (key in entity.obstacleMap) {
           return true;
+        }else if (key in entity.letterMap){
+          console.log(`letter collision?`);
+          console.log(`letter: ${entity.letterMap[position.x]["index"][0]}`);
+          entity.removeMesh(entity.letterMap[position.x]["index"][1]);
         }
       }
     }

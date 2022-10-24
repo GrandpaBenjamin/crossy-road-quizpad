@@ -11,6 +11,10 @@
     "deploy:web": "netlify deploy --prod --dir web-build"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.2.0",
+    "@fortawesome/free-regular-svg-icons": "^6.2.0",
+    "@fortawesome/free-solid-svg-icons": "^6.2.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-native-picker/picker": "2.2.1",
     "@tweenjs/tween.js": "^17.2.0",
@@ -22,6 +26,7 @@
     "expo-gl": "~11.1.1",
     "expo-sharing": "~10.1.0",
     "expo-three": "^6.1.0",
+    "get-text-width": "^1.0.3",
     "gsap": "^2.0.2",
     "react": "^17.0.1",
     "react-dom": "17.0.1",

@@ -9,45 +9,44 @@ import Characters from "../src/Characters";
 import useDimensions from "../src/hooks/useDimensions";
 import Images from "../src/Images";
 
+import { resetProgress } from "../src/quizManager";
+import { globalVars } from "../src/GlobalVars";
 // import { setGameState } from '../src/actions/game';
 
 //TODO: Make this dynamic
 const banner = [
   {
     color: "#3640eb",
-    title: "phil knows all",
-    /*
-    button: {
-      onPress: (_) => {
-        Alert.alert(
-          "Phil knows all",
-          "Join our mailing list and discover the latest news from Expo and Evan Bacon.\n\n Read our privacy policy on https://github.com/EvanBacon/Expo-Crossy-Road/privacy.md",
-          [
-            { text: "Cancel", onPress: () => console.log("Cancel Pressed!") },
-            { text: "OK", onPress: () => console.log("OK Pressed!") },
-          ],
-          {
-            cancelable: false,
-          }
-        );
-      },
-      source: Images.button.mail,
-      style: { aspectRatio: 1.85, height: 40 },
-    },*/
+    title: `you died `
   },
   {
     color: "#368FEB",
-    title: "SHACO smurf",
+    title: "forked from EvanBacon",
+    button: {
+      onPress: (_) => {
+        window.open("https://github.com/EvanBacon/Expo-Crossy-Road", '_blank').focus();
+      },
+      source: Images.button.social,
+      style: { aspectRatio: 1.85, height: 40 },
+    },
   },
   {
     color: "#36D6EB",
-    title: "hardstuck iron IV",
+    title: "tweaked by GrandpaBenjamin",
+    button: {
+      onPress: (_) => {
+        window.open("https://oldpersonshome.dev", 'abuelo').focus();
+      },
+      source: Images.button.social,
+      style: { aspectRatio: 1.85, height: 40 },
+    },
   },
 ];
 
 // const AnimatedBanner = Animated.createAnimatedComponent(Banner);
 
 function GameOver({ ...props }) {
+  resetProgress();
   const {
     window: { width },
   } = useDimensions();

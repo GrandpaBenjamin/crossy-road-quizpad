@@ -3,7 +3,7 @@ import { Object3D } from 'three';
 import ModelLoader from '../../src/ModelLoader';
 import { groundLevel } from '../GameSettings';
 
-import { questionType, currentLetter} from '../quizManager';
+import { questionType, currentLetterIndex, increaseCLI, getCurrentLetter, resetProgress} from '../quizManager';
 
 export const Fill = {
   empty: 'empty',
@@ -32,6 +32,10 @@ export default class Grass extends Object3D {
 
 */
 
+  removeMesh(mesh) {
+    this.floor.remove(mesh);
+  };
+
   generate = (type = Fill.random) => {
     this.entities.map(val => {
       this.floor.remove(val.mesh);
@@ -39,10 +43,12 @@ export default class Grass extends Object3D {
     });
     this.entities = [];
     this.obstacleMap = {};
+    this.letterMap = {};
     this.treeGen(type);
   };
 
   obstacleMap = {};
+  letterMap = {};
   addObstacle = x => {
     let mesh; //  IMPORTANT OBJECT SPAWNING LOCATION
     if (HAS_VARIETY) {
@@ -61,8 +67,8 @@ export default class Grass extends Object3D {
 
   spawnLetter = (letter,x) => {
     let mesh; //  IMPORTANT OBJECT SPAWNING LOCATION
-    mesh = ModelLoader._letter.getLetter(currentLetter);
-    this.obstacleMap[`${x | 0}`] = { index: this.entities.length };
+    mesh = ModelLoader._letter.getLetter(letter);
+    this.letterMap[`${x | 0}` ]= { index: [letter, mesh] };
     this.entities.push({ mesh });
     this.floor.add(mesh);
     mesh.position.set(x, groundLevel, 0);
@@ -78,7 +84,7 @@ export default class Grass extends Object3D {
       
       if (type === Fill.solid) {
         this.addObstacle(_x);
-        usedSlots.push(_x);
+        //usedSlots.push(_x);
         continue;
       }
 
@@ -101,19 +107,22 @@ export default class Grass extends Object3D {
         }
       }  
     }
-    
-    if (HAS_LETTERS) {
-      console.log(usedSlots);
+    console.log(_rowCount);
+    if (HAS_LETTERS && _rowCount > 0) {
       var spawnLocation = Math.floor(Math.random() * 12)+-7;
-      console.log(spawnLocation)
-      /*
-      while (usedSlots.includes(spawnLocation)){
-        spawnLocation = Math.floor(Math.random()*12)+-7;
-      }
-      */
-      if (spawnLocation !== 0) {
-          this.spawnLetter(currentLetter,spawnLocation);
-      }
+      if (usedSlots.includes(spawnLocation)) { 
+        console.log();
+      }else{
+        if (spawnLocation !== 0 && Math.random() > 0.6) {
+          let letter = getCurrentLetter();
+          if (letter != " " && letter != -1){
+            console.log(letter);
+            this.spawnLetter(letter,spawnLocation);
+            increaseCLI(1);
+          }else if (letter == -1 && questionType == "multipleChoice"){
+            resetProgress();
+          }
+      }}
     }
   };
 
