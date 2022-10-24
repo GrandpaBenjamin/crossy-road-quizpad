@@ -1,3 +1,5 @@
+import { questions } from "../assets/questions/questions_data_test";
+
 export const letterToInt = {
     'a': 0,
     'b': 1,

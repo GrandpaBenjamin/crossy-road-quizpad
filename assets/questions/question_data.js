@@ -1,4 +1,4 @@
-var questions = {
+export var questions = {
 	success: true,
 	data: {
 		questions: [
