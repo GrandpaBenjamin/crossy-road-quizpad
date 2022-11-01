@@ -1,4 +1,4 @@
-import { questions } from "../assets/questions/questions_data_test";
+import { questions } from "../assets/questions/question_data.js";
 
 export const letterToInt = {
     'a': 0,
@@ -38,21 +38,59 @@ export const letterToInt = {
     "9": 34,
 }
 
+export var QUESTION_DATA = questions.data;
+var numberOfQuestions = QUESTION_DATA.questions.length;
+export var currentQuestion = 0;
+
 export var questionType = "multipleChoice";
 export var currentLetterIndex = 0;
-export var currentWord = "123";//"balls";
+export var currentWord = "1234";//"phil";
 export var question = "What is a+b?";
 export var answer = "two";
 export var choice = null;
 
+
+export function getAnswerAtID(id){
+    let answers = getCurrentQuestionAnswers();
+    //console.log(answers);
+    //console.log(answers[id]);
+    return answers[id];
+}
+
+export function getCorrectAnswer(){
+    let answers = getCurrentQuestionAnswers();
+    for (let i = 0; i < answers.length; i++){
+        if (answers[i].isCorrect == true){
+            return answers[i];
+        }
+    }
+};
+
+export function getCurrentQuestion(){
+    return QUESTION_DATA.questions[currentQuestion];
+};
+
+export function nextQuestion(){
+    if (currentQuestion+1 >= numberOfQuestions){
+        currentQuestion = -1;
+    }else{
+        currentQuestion += 1;
+    }
+};
+
+export function getCurrentQuestionAnswers(){
+    return QUESTION_DATA.questions[currentQuestion].answers;
+};
+
 export function increaseCLI(byWhat){
     currentLetterIndex+=byWhat;
-}
+};
 
 export function resetProgress(){
     currentLetterIndex = 0;
+    currentQuestion = 0;
     console.log("resetted");
-}
+};
 
 export function getCurrentLetter(){
     if (currentLetterIndex >= currentWord.length){
@@ -60,8 +98,34 @@ export function getCurrentLetter(){
     }else{
         return currentWord[currentLetterIndex]
     }
-}
+};
 
 export function setChoice(data){
     choice = data;
+};
+
+export var score = 0;
+export var letterDetected = false;
+
+export function setLetterDetected(state){
+    letterDetected = state;
+}
+
+export var returningScore = false;
+export function returningScoreToBefore(state){
+    returningScore = state;
+}
+
+export function setScore(value){
+    score = value;
+}
+
+export var answersVisible = false;
+export function setAnswersVisible(state){
+    answersVisible = state;
+}
+
+export var displayQuestion = true;
+export function hideQuestion(){
+    displayQuestion = false;
 }

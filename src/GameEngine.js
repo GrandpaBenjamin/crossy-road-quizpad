@@ -20,6 +20,8 @@ import {
   startingRow,
 } from "./GameSettings";
 
+import { score, letterDetected, setLetterDetected, setScore, returningScore, returningScoreToBefore, hideQuestion } from "./quizManager";
+
 const initialState = {
   id: Characters.bacon.id,
   name: Characters.bacon.name,
@@ -138,15 +140,33 @@ export default class Engine {
     // Stop player from finishing a movement
     this._hero.stopAnimations();
     this.onGameEnded();
+    setScore(0);
+    hideQuestion();
     // this.gameState = State.Game.gameOver;
 
     // this.props.setGameState(this.gameState);
   };
 
+  checkForLetterCollection = () =>{
+    if (letterDetected){
+      this.onUpdateScore(score+10);
+      setScore(score+10);
+      setLetterDetected(false);
+      console.log(`setted score ${score}`);
+    }
+    if (returningScore){
+      this.onUpdateScore(score-10);
+      setScore(score-10);
+      returningScoreToBefore(false);
+      console.log(`setted score ${score}`);
+    }
+  }
+
   tick = (dt) => {
     // this.drive();
 
     this.gameMap.tick(dt, this._hero);
+    this.checkForLetterCollection();
 
     if (!this._hero.moving) {
       this._hero.moveOnEntity();
@@ -193,7 +213,8 @@ export default class Engine {
 
   updateScore = () => {
     const position = Math.max(Math.floor(this._hero.position.z) - 8, 0);
-    this.onUpdateScore(position);
+    //we dont do this anymore
+    //this.onUpdateScore(position);
   };
 
   moveWithDirection = (direction) => {

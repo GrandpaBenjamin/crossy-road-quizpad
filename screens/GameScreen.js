@@ -19,13 +19,16 @@ import GameOverScreen from "./GameOverScreen";
 import HomeScreen from "./HomeScreen";
 import SettingsScreen from "./SettingsScreen";
 import GameContext from "../context/GameContext";
+import Banner from "../components/GameOver/Banner";
 
 import { globalVars } from "../src/GlobalVars";
-import { answer, question } from "../src/quizManager";
+import { getCurrentQuestionAnswers, getAnswerAtID, getCurrentQuestion, question, answersVisible, setAnswersVisible, returningScoreToBefore, letterDetected, setLetterDetected } from "../src/quizManager";
+import Images from "../src/Images";
 
 function getTextWidth(text){
   let widthConstant = 30;
-  return widthConstant*text.length;
+  let length = widthConstant*text.length
+  return length;
 }
 
 //dw bout this... had to copy it from ScoreText.js but its fine
@@ -156,10 +159,11 @@ class Game extends Component {
 
   UNSAFE_componentWillMount() {
     this.engine = new Engine();
+    this.setState({ currentQuestion: question });
     // this.engine.hideShadows = this.hideShadows;
     this.engine.onUpdateScore = (position) => {
       if (this.state.score < position) {
-        this.setState({ score: position });
+        this.setState({ score: position, currentQuestion: question });
         globalVars["score"] = this.state.score;
       }
     };
@@ -248,6 +252,89 @@ class Game extends Component {
     );
   }
 
+  showAnswers(){
+    setAnswersVisible(!answersVisible);
+    console.log(answersVisible);
+    setLetterDetected(true); //MUST FIX. INCREASES SCORE BY 10 EVERYTIME WE CLICK THE BUTTON
+    //returningScoreToBefore(true);
+    //console.log("answers shown");
+  }
+
+  renderAnswers(){
+    let content = [];
+    if (answersVisible){
+      console.log("attempting to display");
+      for (let i=1; i <= getCurrentQuestionAnswers().length;i++) {
+        let banner = [
+          {
+            //color: "#3640eb",
+            title: `${i}) ${getAnswerAtID(i-1).text}`,
+            textStyle: bannerStyle.answerBanner,
+            
+          }];
+        content.push(<View index={i-1} style={[bannerStyle.container]}>
+          {banner.map((val, index) => (
+          <Banner
+            key={index}
+            style={val.textStyle}
+            title={val.title}
+            button={val.button}
+          />
+        ))}</View>)
+      }
+      //returningScoreToBefore(true);
+    }/*
+    content.push(<View key={0} pointerEvents="none" style={[big_styles[0].container]}><Text style={[big_styles[1].answer, textShadow]}>{`${1}) ${getAnswerAtID(0).text}                    ${2}) ${getAnswerAtID(1).text}`}</Text></View>);
+    content.push(<View key={1} pointerEvents="none" style={[big_styles[1].container]}><Text style={[big_styles[3].answer, textShadow]}>{`${3}) ${getAnswerAtID(2).text}                    ${4}) ${getAnswerAtID(3).text}`}</Text></View>);
+    */
+    /*for (let i=1; i <= getCurrentQuestionAnswers().length/2;i++) {
+      content.push(<View key={i-1} pointerEvents="none" style={[big_styles[i-1].container]}><Text style={[big_styles[i-1].answer, textShadow]}>{`${i}) ${getAnswerAtID(i-1).text}                    ${i+1}) ${getAnswerAtID(i).text}`}</Text></View>);
+    }*/
+    
+    return content;
+  }
+  
+  renderQuestion(){
+    let banner = [
+      {
+        //color: "#3640eb",
+        title: `${getCurrentQuestion().title}`,
+        textStyle: bannerStyle.banner,
+        button: {
+          onPress: (_) => {
+          this.showAnswers();
+          },
+          source: Images.button.menu,
+          style: { aspectRatio: 1.85, height: 40 },
+        },
+      },/*
+      {
+        color: "#368FEB",
+        title: "forked from EvanBacon",
+        button: {
+          onPress: (_) => {
+          window.open("https://github.com/EvanBacon/Expo-Crossy-Road", '_blank').focus();
+          },
+          source: Images.button.social,
+          style: { aspectRatio: 1.85, height: 40 },
+        },
+        
+      },*/
+    ];
+    let content = [];
+    content.push(<View key={0} style={[bannerStyle.container]}>
+      {banner.map((val, index) => (
+      <Banner
+        key={index}
+        style={val.textStyle}
+        title={val.title}
+        button={val.button}
+      />
+    ))}</View>)
+    //content.push(<View pointerEvents="none" style={[styles.container]}><Text style={[styles.question, textShadow]}>{getCurrentQuestion().title}</Text></View>)
+    return content;
+  }
+
   render() {
     const { isDarkMode, isPaused } = this.props;
 
@@ -273,12 +360,10 @@ class Game extends Component {
           score={this.state.score}
           gameOver={this.state.gameState === State.Game.gameOver}
         />
-        <View pointerEvents="none" style={[styles.container]}>
-          <Text style={[styles.question, textShadow]}>{question}</Text>
-        </View>
-        <View pointerEvents="none" style={[styles_sub.container]}>
-          <Text style={[styles_sub.answer, textShadow]}>{"1) "+answer}</Text>
-        </View>
+        <div>
+          {this.renderQuestion()}
+          {this.renderAnswers()}
+        </div>
         {this.renderGameOver()}
 
         {this.renderHomeScreen()}
@@ -343,7 +428,11 @@ const styles = StyleSheet.create({
     top:16,
     marginLeft:"auto",
     marginRight:"auto",
-    left:(Dimensions.get('window').width/2)-(getTextWidth(question)/2),
+    left:(Dimensions.get('window').width/2)-(getTextWidth(getCurrentQuestion().title)/2),
+    flex: 1, 
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
   },
   question: {
     color: 'white',
@@ -360,15 +449,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     letterSpacing: '0.15em',
   }
-})
+});
 
-const styles_sub = StyleSheet.create({
+const styles_0 = StyleSheet.create({
   container: {
     position: 'absolute',
-    top:48,
+    top:54,
     marginLeft:"auto",
     marginRight:"auto",
-    left:(Dimensions.get('window').width/2)-(getTextWidth("1) "+answer)/2),
+    left:(Dimensions.get('window').width/2)-(getTextWidth(`1) ${getAnswerAtID(0).text} 2) ${getAnswerAtID(1).text}`)/2),
   },
   answer: {
     color: 'indianred',
@@ -377,6 +466,85 @@ const styles_sub = StyleSheet.create({
     marginTop: 16,
     backgroundColor: 'transparent',
     letterSpacing: '0.15em',
+  }
+});
+
+const styles_1 = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    top:10,
+    marginLeft:"auto",
+    marginRight:"auto",
+    left:(Dimensions.get('window').width/2)-(getTextWidth(`3) ${getAnswerAtID(2).text} 4) ${getAnswerAtID(3).text}`)/2),
+  },
+  answer: {
+    color: 'indianred',
+    fontFamily: 'retro',
+    fontSize: 40,
+    marginTop: 24,
+    backgroundColor: 'transparent',
+    letterSpacing: '0.15em',
+  }
+})
+
+const styles_2 = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    top:48,
+    marginLeft:"auto",
+    marginRight:"auto",
+    left:(Dimensions.get('window').width/2)-(getTextWidth(`${3}) ${getAnswerAtID(2).text}`)/2),
+  },
+  answer: {
+    color: 'indianred',
+    fontFamily: 'retro',
+    fontSize: 40,
+    marginTop: 48*2+10,
+    backgroundColor: 'transparent',
+    letterSpacing: '0.15em',
+  }
+})
+
+const styles_3 = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    top:48,
+    marginLeft:"auto",
+    marginRight:"auto",
+    left:(Dimensions.get('window').width/2)-(getTextWidth(`${4}) ${getAnswerAtID(3).text}`)/2),
+  },
+  answer: {
+    color: 'indianred',
+    fontFamily: 'retro',
+    fontSize: 40,
+    marginTop: 64*2+10,
+    backgroundColor: 'transparent',
+    letterSpacing: '0.15em',
+  }
+})
+
+var big_styles = {
+  0: styles_0,
+  1: styles_1,
+  2: styles_2,
+  3: styles_3,
+}
+
+const bannerStyle = StyleSheet.create({
+  container: {
+    position: "relative",
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "transparent",
+  },
+  banner: {
+    backgroundColor: "transparent",
+    fontFamily: "retro",
+  },
+  answerBanner: {
+    backgroundColor: "transparent",
+    fontFamily: "retro",
+    color: "indianred",
   }
 })
 

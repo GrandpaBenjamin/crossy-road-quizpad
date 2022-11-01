@@ -1,9 +1,10 @@
 import { Object3D } from 'three';
 
 import ModelLoader from '../../src/ModelLoader';
-import { groundLevel } from '../GameSettings';
+import { groundLevel, startingRow } from '../GameSettings';
 
 import { questionType, currentLetterIndex, increaseCLI, getCurrentLetter, resetProgress} from '../quizManager';
+import Score from '../../components/ScoreText';
 
 export const Fill = {
   empty: 'empty',
@@ -34,6 +35,10 @@ export default class Grass extends Object3D {
 
   removeMesh(mesh) {
     this.floor.remove(mesh);
+  };
+
+  completelyRemoveMesh(){
+    this.letterMap = {};
   };
 
   generate = (type = Fill.random) => {
@@ -72,6 +77,7 @@ export default class Grass extends Object3D {
     this.entities.push({ mesh });
     this.floor.add(mesh);
     mesh.position.set(x, groundLevel, 0);
+    increaseCLI(1);
   };
 
   treeGen = type => {
@@ -108,20 +114,23 @@ export default class Grass extends Object3D {
       }  
     }
     console.log(_rowCount);
-    if (HAS_LETTERS && _rowCount > 0) {
+    if (HAS_LETTERS && this.position.z > startingRow+1) {
       var spawnLocation = Math.floor(Math.random() * 12)+-7;
       if (usedSlots.includes(spawnLocation)) { 
         console.log();
       }else{
-        if (spawnLocation !== 0 && Math.random() > 0.6) {
+        let odds = Math.random();
+        console.log(odds);
+        if (spawnLocation !== 0 && odds > 0.2) {
           let letter = getCurrentLetter();
           if (letter != " " && letter != -1){
             console.log(letter);
+            console.log(this.position);
             this.spawnLetter(letter,spawnLocation);
-            increaseCLI(1);
-          }else if (letter == -1 && questionType == "multipleChoice"){
+            
+          }/*else if (letter == -1 && questionType == "multipleChoice"){
             resetProgress();
-          }
+          }*/
       }}
     }
   };

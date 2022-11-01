@@ -3,6 +3,8 @@ import { utils } from 'expo-three';
 import { BASE_ANIMATION_TIME, groundLevel, IDLE_DURING_GAME_PLAY, PLAYER_IDLE_SCALE, startingRow } from './GameSettings';
 import ModelLoader from '../src/ModelLoader';
 
+import { resetProgress } from './quizManager';
+
 const normalizeAngle = angle => {
   return Math.atan2(Math.sin(angle), Math.cos(angle));
 };
@@ -138,6 +140,7 @@ export default class CrossyPlayer extends Group {
     this.ridingOn = null;
     this.ridingOnOffset = null;
     this.isAlive = true;
+    resetProgress();
   }
 
   skipPendingMovement() {

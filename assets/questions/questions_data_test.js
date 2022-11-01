@@ -1,4 +1,4 @@
-export var questions = {
+export const questions = {
   success: true,
   data: {
     questions: [

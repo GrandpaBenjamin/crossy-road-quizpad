@@ -31,7 +31,7 @@ const banner = [
     },
   },
   {
-    color: "#36D6EB",
+    color: "#ff8c00",
     title: "tweaked by GrandpaBenjamin",
     button: {
       onPress: (_) => {
@@ -46,7 +46,7 @@ const banner = [
 // const AnimatedBanner = Animated.createAnimatedComponent(Banner);
 
 function GameOver({ ...props }) {
-  resetProgress();
+  //resetProgress();
   const {
     window: { width },
   } = useDimensions();

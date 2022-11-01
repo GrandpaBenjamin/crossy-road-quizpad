@@ -39,10 +39,11 @@ export default function Banner(props) {
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 18,
+    fontSize: 24,
     color: 'white',
-    fontFamily: 'retro_menu',
+    fontFamily: 'retro',
     textAlign: 'center',
+    fontWeight: 'bold',
   },
   banner: {
     flex: 1,

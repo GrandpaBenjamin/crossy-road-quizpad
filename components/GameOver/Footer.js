@@ -34,8 +34,8 @@ export default function Footer({ style, showSettings, setGameState, navigation }
   }, []);
 
   LayoutAnimation.easeInEaseOut();
-
-  return (
+  return(<div></div>);
+  /*return (
     <View style={[styles.container, style]}>
       <Button
         onPress={() => {
@@ -64,7 +64,7 @@ export default function Footer({ style, showSettings, setGameState, navigation }
         source={Images.button.rank}
       />
     </View>
-  );
+  );*/
 
 }
 

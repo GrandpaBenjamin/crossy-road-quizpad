@@ -16,16 +16,16 @@ import Footer from "../components/Home/Footer";
 import GameContext from "../context/GameContext";
 
 let hasShownTitle = false;
-
 function Screen(props) {
+  props.onPlay();
   const { setCharacter, character } = React.useContext(GameContext);
   const animation = new Animated.Value(0);
 
   React.useEffect(() => {
     function onKeyUp({ keyCode }) {
       // Space, up-arrow
-      if ([32, 38, 87].includes(keyCode)) {
-        props.onPlay();
+      if ([32, 38, 87, 65, 63, 68, 37, 40, 39, 83].includes(keyCode)) {
+        //props.onPlay();
       }
     }
 
@@ -52,6 +52,29 @@ function Screen(props) {
 
   const { top, bottom, left, right } = useSafeArea();
 
+  function renderButtons(){
+    let content = [];
+    content.push(
+    <View style={{
+            justifyContent: "center",
+            alignItems: "stretch",
+            position: "absolute",
+            bottom: Math.max(bottom, 8),
+            left: Math.max(left, 8),
+            right: Math.max(right, 8),
+          }}>
+          <View style={{ height: 64, marginBottom: 48, alignItems: "center" }}>
+            {!__DEV__ && <Hand style={{ width: 36 }} />}
+          </View>
+          <Footer
+            onCharacterSelect={() => {
+              // TODO(Bacon): Create a character select page
+            }}
+            onShop={() => {}}
+            onMultiplayer={() => {}}
+            onCamera={() => {}}
+          /></View>);
+    return content;}
   const animatedTitleStyle = {
     transform: [
       {
@@ -95,7 +118,7 @@ function Screen(props) {
             easing: Easing.in(Easing.qubic),
             onComplete: ({ finished }) => {
               if (finished) {
-                props.onPlay();
+                //props.onPlay();
               }
             },
           }).start();
@@ -107,28 +130,7 @@ function Screen(props) {
           style={[styles.title, animatedTitleStyle]}
         />
 
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "stretch",
-            position: "absolute",
-            bottom: Math.max(bottom, 8),
-            left: Math.max(left, 8),
-            right: Math.max(right, 8),
-          }}
-        >
-          <View style={{ height: 64, marginBottom: 48, alignItems: "center" }}>
-            {!__DEV__ && <Hand style={{ width: 36 }} />}
-          </View>
-          <Footer
-            onCharacterSelect={() => {
-              // TODO(Bacon): Create a character select page
-            }}
-            onShop={() => {}}
-            onMultiplayer={() => {}}
-            onCamera={() => {}}
-          />
-        </View>
+        {/*renderButtons()*/}
       </TouchableOpacity>
     </View>
   );

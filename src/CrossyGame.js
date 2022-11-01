@@ -10,6 +10,8 @@ import Water from './Particles/Water';
 import Rows from './Row';
 import { Fill } from './Row/Grass';
 
+import { nextQuestion, getCorrectAnswer, getAnswerAtID, setLetterDetected } from './quizManager';
+
 // TODO Add to state - disable/enable when battery is low
 const useParticles = true;
 const useShadows = true;
@@ -170,9 +172,17 @@ export class GameMap {
         if (key in entity.obstacleMap) {
           return true;
         }else if (key in entity.letterMap){
-          console.log(`letter collision?`);
           console.log(`letter: ${entity.letterMap[position.x]["index"][0]}`);
           entity.removeMesh(entity.letterMap[position.x]["index"][1]);
+          //call updateScore here
+          setLetterDetected(true);
+          if (getCorrectAnswer().text == getAnswerAtID(entity.letterMap[position.x]["index"][0]-1).text){ //only works for multiple choice. needs rework for phil in the gaps
+            console.log("correct");
+            nextQuestion();
+          }else{
+            console.log("incorrect");
+          }
+          entity.completelyRemoveMesh();
         }
       }
     }
@@ -197,6 +207,7 @@ export class CrossyGameMap extends GameMap {
     super();
 
     this.heroWidth = heroWidth;
+    
 
     // Assign mesh to corresponding array
     // and add mesh to scene
