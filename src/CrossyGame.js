@@ -10,7 +10,7 @@ import Water from './Particles/Water';
 import Rows from './Row';
 import { Fill } from './Row/Grass';
 
-import { nextQuestion, getCorrectAnswer, getAnswerAtID, setLetterDetected } from './quizManager';
+import { nextQuestion, getCorrectAnswer, getAnswerAtID, setLetterDetected, killyourself, setWrongAnswer, getHurt } from './quizManager';
 
 // TODO Add to state - disable/enable when battery is low
 const useParticles = true;
@@ -181,6 +181,7 @@ export class GameMap {
             nextQuestion();
           }else{
             console.log("incorrect");
+            getHurt();
           }
           entity.completelyRemoveMesh();
         }

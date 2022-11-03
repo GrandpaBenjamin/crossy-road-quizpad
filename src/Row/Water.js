@@ -4,13 +4,24 @@ import { Object3D, Box3 } from 'three';
 import ModelLoader from '../../src/ModelLoader';
 import { disableDriftwood } from '../GameSettings';
 import Foam from '../Particles/Foam';
+import { getAnswerAtID, getCorrectAnswer, getCurrentLetter, getHurt, increaseCLI, nextQuestion, setLetterDetected } from '../quizManager';
 
 export default class Water extends Object3D {
   active = false;
   entities = [];
+  letterEntities = [];
+  letterMap = {};
   sineCount = 0;
   sineInc = Math.PI / 50;
   top = 0.25;
+
+  removeMesh(mesh) {
+    this.floor.remove(mesh);
+  };
+
+  completelyRemoveMesh(){
+    this.letterMap = {};
+  };
 
   getWidth = mesh => {
     let box3 = new Box3();
@@ -33,6 +44,16 @@ export default class Water extends Object3D {
     }
   };
 
+  spawnLetter = (letter,x) => {
+    let mesh; //  IMPORTANT OBJECT SPAWNING LOCATION
+    mesh = ModelLoader._letter.getLetter(letter);
+    this.letterMap[`${x | 0}` ]= { index: [letter, mesh] };
+    this.letterEntities.push({ mesh });
+    this.floor.add(mesh);
+    mesh.position.set(x, 0.25, -0.15);
+    increaseCLI(1);
+  };
+
   generateStatic = () => {
     // Speeds: .01 through .08
     // Number of cars: 1 through 3
@@ -40,6 +61,7 @@ export default class Water extends Object3D {
 
     let xPos = Math.floor(Math.random() * 2 - 4);
     let x = 0;
+    let randomLilypad = Math.round(Math.random());
     while (x < numItems) {
       if (this.entities.length - 1 < x) {
         let mesh = ModelLoader._lilyPad.getRandom();
@@ -53,19 +75,23 @@ export default class Water extends Object3D {
           width,
           collisionBox: this.heroWidth / 2 + width / 2 - 0.1,
         });
-        this.floor.add(mesh);
+        this.floor.add(mesh); //where Spawing of lilypad happens
+        if (randomLilypad == x && Math.random() > 0.05){
+          this.spawnLetter(getCurrentLetter(),xPos);
+        }
       }
 
       this.entities[x].mesh.position.set(xPos, 0.125, 0);
       this.entities[x].speed = 0;
       // this.entities[x].mesh.rotation.y = (Math.PI / 2) * xDir;
 
+      /*
       TweenMax.to(this.entities[x].mesh.rotation, Math.random() * 2 + 2, {
         y: Math.random() * 1.5 + 0.5,
         yoyo: true,
         repeat: -1,
         ease: Power2.easeInOut,
-      });
+      });*/
 
       xPos += Math.floor(Math.random() * 2 + 2);
       x++
@@ -253,6 +279,21 @@ export default class Water extends Object3D {
         player.ridingOn = entity;
         player.ridingOnOffset = player.position.x - entity.mesh.position.x;
         this.bounce({ entity, player });
+      }
+      console.log("collision with lilpad");
+      
+      if (player.position.x in this.letterMap){
+        console.log(`letter: ${this.letterMap[player.position.x]["index"][0]}`);
+        this.removeMesh(this.letterMap[player.position.x]["index"][1]);
+        setLetterDetected(true);
+        if (getCorrectAnswer().text == getAnswerAtID(this.letterMap[player.position.x]["index"][0]-1).text){ //only works for multiple choice. needs rework for phil in the gaps
+          console.log("correct");
+          nextQuestion();
+        }else{
+          console.log("incorrect");
+          getHurt();
+        }
+        this.completelyRemoveMesh();
       }
     }
   };

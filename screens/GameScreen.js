@@ -22,11 +22,21 @@ import GameContext from "../context/GameContext";
 import Banner from "../components/GameOver/Banner";
 
 import { globalVars } from "../src/GlobalVars";
-import { getCurrentQuestionAnswers, getAnswerAtID, getCurrentQuestion, question, answersVisible, setAnswersVisible, returningScoreToBefore, letterDetected, setLetterDetected } from "../src/quizManager";
+import { getCurrentQuestionAnswers, getAnswerAtID, getCurrentQuestion, question, answersVisible, setAnswersVisible, decreaseScore, setLetterDetected, letMeRender } from "../src/quizManager";
 import Images from "../src/Images";
+import Lives from "../components/LivesText";
+
+var menuButtons = [Images.button.menu,Images.button.menu_flip];
+var currentMenuButton = 0;
+
+function increaseMenuButton(){
+  if (currentMenuButton+1 >= menuButtons.length){
+    currentMenuButton = 0;
+  }else {currentMenuButton+=1;}
+}
 
 function getTextWidth(text){
-  let widthConstant = 30;
+  let widthConstant = 27;
   let length = widthConstant*text.length
   return length;
 }
@@ -162,10 +172,7 @@ class Game extends Component {
     this.setState({ currentQuestion: question });
     // this.engine.hideShadows = this.hideShadows;
     this.engine.onUpdateScore = (position) => {
-      if (this.state.score < position) {
-        this.setState({ score: position, currentQuestion: question });
-        globalVars["score"] = this.state.score;
-      }
+      this.setState({ score: position, currentQuestion: question });
     };
     this.engine.onGameInit = () => {
       this.setState({ score: 0 });
@@ -255,7 +262,9 @@ class Game extends Component {
   showAnswers(){
     setAnswersVisible(!answersVisible);
     console.log(answersVisible);
-    setLetterDetected(true); //MUST FIX. INCREASES SCORE BY 10 EVERYTIME WE CLICK THE BUTTON
+    increaseMenuButton();
+    setLetterDetected(true); //MUST FIX. INCREASES SCORE BY 10 EVERYTIME BUTTON IS CLICKED
+    decreaseScore(10);
     //returningScoreToBefore(true);
     //console.log("answers shown");
   }
@@ -294,6 +303,14 @@ class Game extends Component {
     return content;
   }
   
+  renderExplanationText(){
+    let content = [];
+    if (letMeRender){
+      content.push(<View key={0} pointerEvents="none" style={[styleTopText.container]}><Text style={[styleTopText.answer, textShadow]}>{`collect the correct answer`}</Text></View>);
+    }
+    return content;
+  }
+
   renderQuestion(){
     let banner = [
       {
@@ -304,7 +321,7 @@ class Game extends Component {
           onPress: (_) => {
           this.showAnswers();
           },
-          source: Images.button.menu,
+          source: menuButtons[currentMenuButton],
           style: { aspectRatio: 1.85, height: 40 },
         },
       },/*
@@ -355,11 +372,13 @@ class Game extends Component {
           style={{ flex: 1, opacity: this.transitionScreensValue }}
         >
           {this.renderGame()}
+          {this.renderExplanationText()}
         </Animated.View>
         <Score
           score={this.state.score}
           gameOver={this.state.gameState === State.Game.gameOver}
         />
+        <Lives/>
         <div>
           {this.renderQuestion()}
           {this.renderAnswers()}
@@ -451,84 +470,23 @@ const styles = StyleSheet.create({
   }
 });
 
-const styles_0 = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    top:54,
-    marginLeft:"auto",
-    marginRight:"auto",
-    left:(Dimensions.get('window').width/2)-(getTextWidth(`1) ${getAnswerAtID(0).text} 2) ${getAnswerAtID(1).text}`)/2),
-  },
-  answer: {
-    color: 'indianred',
-    fontFamily: 'retro',
-    fontSize: 40,
-    marginTop: 16,
-    backgroundColor: 'transparent',
-    letterSpacing: '0.15em',
-  }
-});
-
-const styles_1 = StyleSheet.create({
+const styleTopText= StyleSheet.create({
   container: {
     position: 'absolute',
     top:10,
     marginLeft:"auto",
     marginRight:"auto",
-    left:(Dimensions.get('window').width/2)-(getTextWidth(`3) ${getAnswerAtID(2).text} 4) ${getAnswerAtID(3).text}`)/2),
+    left:(Dimensions.get('window').width/2)-(getTextWidth(`collect the correct answer`)/2),
   },
   answer: {
-    color: 'indianred',
+    color: 'white',
     fontFamily: 'retro',
-    fontSize: 40,
-    marginTop: 24,
+    fontSize: 32,
+    marginTop: 16,
     backgroundColor: 'transparent',
     letterSpacing: '0.15em',
   }
-})
-
-const styles_2 = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    top:48,
-    marginLeft:"auto",
-    marginRight:"auto",
-    left:(Dimensions.get('window').width/2)-(getTextWidth(`${3}) ${getAnswerAtID(2).text}`)/2),
-  },
-  answer: {
-    color: 'indianred',
-    fontFamily: 'retro',
-    fontSize: 40,
-    marginTop: 48*2+10,
-    backgroundColor: 'transparent',
-    letterSpacing: '0.15em',
-  }
-})
-
-const styles_3 = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    top:48,
-    marginLeft:"auto",
-    marginRight:"auto",
-    left:(Dimensions.get('window').width/2)-(getTextWidth(`${4}) ${getAnswerAtID(3).text}`)/2),
-  },
-  answer: {
-    color: 'indianred',
-    fontFamily: 'retro',
-    fontSize: 40,
-    marginTop: 64*2+10,
-    backgroundColor: 'transparent',
-    letterSpacing: '0.15em',
-  }
-})
-
-var big_styles = {
-  0: styles_0,
-  1: styles_1,
-  2: styles_2,
-  3: styles_3,
-}
+});
 
 const bannerStyle = StyleSheet.create({
   container: {
@@ -540,6 +498,7 @@ const bannerStyle = StyleSheet.create({
   banner: {
     backgroundColor: "transparent",
     fontFamily: "retro",
+    //letterSpacing: '0.15em',
   },
   answerBanner: {
     backgroundColor: "transparent",

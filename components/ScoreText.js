@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     color: 'yellow',
     fontFamily: 'retro_menu',
     fontSize: 14,
-    marginTop: 10,
+    marginTop: -30,
     letterSpacing: -0.1,
     backgroundColor: 'transparent',
     letterSpacing: '0.0em',

@@ -48,6 +48,37 @@ export var currentWord = "1234";//"phil";
 export var question = "What is a+b?";
 export var answer = "two";
 export var choice = null;
+export var didWin = false;
+export var letMeRender = true;
+export var wrongAnswer = false;
+export var LIVES = 3;
+export var decreaseTheScore = false;
+
+export function decreaseScore(state){
+    decreaseTheScore = state;
+}
+
+export function getHurt(){
+    if (LIVES-1 == 0){
+        LIVES -= 1;
+        killyourself();
+        setWrongAnswer(true);
+    }else{
+        LIVES -= 1;
+    }
+}
+
+export function setWrongAnswer(state){
+    wrongAnswer = state;
+}
+
+export function setLetMeRender(state){
+    letMeRender = false;
+}
+
+export function win() {
+    didWin = true;
+}
 
 
 export function getAnswerAtID(id){
@@ -72,7 +103,8 @@ export function getCurrentQuestion(){
 
 export function nextQuestion(){
     if (currentQuestion+1 >= numberOfQuestions){
-        currentQuestion = -1;
+        killyourself();
+        win();
     }else{
         currentQuestion += 1;
     }
@@ -94,7 +126,8 @@ export function resetProgress(){
 
 export function getCurrentLetter(){
     if (currentLetterIndex >= currentWord.length){
-        return -1
+        currentLetterIndex = 0;
+        return currentWord[currentLetterIndex]
     }else{
         return currentWord[currentLetterIndex]
     }
@@ -128,4 +161,12 @@ export function setAnswersVisible(state){
 export var displayQuestion = true;
 export function hideQuestion(){
     displayQuestion = false;
+}
+
+export var over = false;
+export function killyourself(){
+    over = true;
+}
+export function revive(){
+    over = false;
 }

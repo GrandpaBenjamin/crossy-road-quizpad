@@ -8,17 +8,14 @@ import AudioManager from "../src/AudioManager";
 import Characters from "../src/Characters";
 import useDimensions from "../src/hooks/useDimensions";
 import Images from "../src/Images";
+import Button from "../components/Button";
 
-import { resetProgress } from "../src/quizManager";
+import { didWin, gameOverText, resetProgress, wrongAnswer } from "../src/quizManager";
 import { globalVars } from "../src/GlobalVars";
 // import { setGameState } from '../src/actions/game';
 
 //TODO: Make this dynamic
 const banner = [
-  {
-    color: "#3640eb",
-    title: `you died `
-  },
   {
     color: "#368FEB",
     title: "forked from EvanBacon",
@@ -122,7 +119,6 @@ function GameOver({ ...props }) {
   const { top, bottom, left, right } = useSafeArea();
 
   const imageStyle = { width: 60, height: 48 };
-
   return (
     <View
       style={[
@@ -132,6 +128,26 @@ function GameOver({ ...props }) {
       ]}
     >
       <View key="content" style={{ flex: 1, justifyContent: "center" }}>
+        <Banner animatedValue={animations[0].interpolate({
+          inputRange: [0.2, 1],
+          outputRange: [-width, 0],
+          extrapolate: "clamp",
+        })}
+        key={0}
+        style={{
+          backgroundColor: "#3640eb",
+          transform: [
+            {
+              scaleY: animations[0].interpolate({
+                inputRange: [0, 0.2],
+                outputRange: [0, 1],
+                extrapolate: "clamp",
+              }),
+            },
+          ],
+        }}
+        title = {didWin ? "you win" : wrongAnswer ? "wrong answer" : "game over"}
+        button={undefined}/>
         {banner.map((val, index) => (
           <Banner
             animatedValue={animations[index].interpolate({
@@ -156,7 +172,16 @@ function GameOver({ ...props }) {
             button={val.button}
           />
         ))}
-      </View>
+        <View style={buttonStyle.container}>
+        <Button
+          onPress={() => {
+            window.location.reload(false);
+          }}
+          imageStyle={[buttonStyle.button, { marginLeft: 4, aspectRatio: 1.9 }]}
+          source={Images.button.long_play}
+          />
+        </View>
+          </View>
 
       <Footer
         style={{ paddingLeft: left || 4, paddingRight: right || 4 }}
@@ -182,5 +207,22 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     color: "#34495e",
+  },
+});
+
+const buttonStyle = StyleSheet.create({
+  container: {
+    alignItems: 'stretch',
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    paddingHorizontal: 4,
+    minHeight: 56,
+    maxHeight: 56,
+    minWidth: '100%',
+    maxWidth: '100%',
+    flex: 1,
+  },
+  button: {
+    height: 56,
   },
 });

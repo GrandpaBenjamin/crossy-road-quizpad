@@ -121,14 +121,14 @@ export default class Grass extends Object3D {
       }else{
         let odds = Math.random();
         console.log(odds);
-        if (spawnLocation !== 0 && odds > 0.2) {
+        if (spawnLocation !== 0 && odds > 0.05) {
           let letter = getCurrentLetter();
           if (letter != " " && letter != -1){
             console.log(letter);
             console.log(this.position);
             this.spawnLetter(letter,spawnLocation);
             
-          }/*else if (letter == -1 && questionType == "multipleChoice"){
+          }else{console.log("we will not be spawning")}/*else if (letter == -1 && questionType == "multipleChoice"){
             resetProgress();
           }*/
       }}

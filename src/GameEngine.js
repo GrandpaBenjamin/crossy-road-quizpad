@@ -20,7 +20,7 @@ import {
   startingRow,
 } from "./GameSettings";
 
-import { score, letterDetected, setLetterDetected, setScore, returningScore, returningScoreToBefore, hideQuestion } from "./quizManager";
+import { score, letterDetected, setLetterDetected, setScore, returningScore, returningScoreToBefore, hideQuestion, over, revive, win, letMeRender, setLetMeRender, decreaseTheScore, decreaseScore } from "./quizManager";
 
 const initialState = {
   id: Characters.bacon.id,
@@ -134,19 +134,23 @@ export default class Engine {
     }
   };
 
+  
   // Reset variables, restart game
   gameOver = () => {
     this._hero.moving = false;
     // Stop player from finishing a movement
-    this._hero.stopAnimations();
+    if (over){
+      revive();
+    }else{this._hero.stopAnimations();}
     this.onGameEnded();
     setScore(0);
     hideQuestion();
+    
     // this.gameState = State.Game.gameOver;
-
+    
     // this.props.setGameState(this.gameState);
   };
-
+  
   checkForLetterCollection = () =>{
     if (letterDetected){
       this.onUpdateScore(score+10);
@@ -162,18 +166,38 @@ export default class Engine {
     }
   }
 
+  nextTick = false;
+  disappear = 200;
   tick = (dt) => {
     // this.drive();
-
     this.gameMap.tick(dt, this._hero);
     this.checkForLetterCollection();
-
+    
     if (!this._hero.moving) {
       this._hero.moveOnEntity();
       this._hero.moveOnCar();
       this.checkIfUserHasFallenOutOfFrame();
     }
+
+    if (over){ this.gameOver(); }
+
+    if (this.disappear === 0){
+      setLetMeRender(false);
+    }else{
+      this.disappear -= 1;
+    }
+
     this.forwardScene();
+    if (decreaseTheScore){
+      decreaseScore(false)
+      this.nextTick = true;
+    }
+    if (this.nextTick){
+      this.onUpdateScore(score-10);
+      setScore(score-10);
+      console.log("decrease");
+      this.nextTick = false;
+    }
   };
 
   checkIfUserHasFallenOutOfFrame = () => {

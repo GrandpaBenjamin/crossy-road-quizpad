@@ -9,6 +9,7 @@ export default {
     controller: require('../assets/images/buttons/controller.png'),
     shop: require('../assets/images/buttons/shop.png'),
     menu: require('../assets/images/buttons/menu.png'),
+    menu_flip: require('../assets/images/buttons/menu-flip.png'),
     settings: require('../assets/images/buttons/settings.png'),
     rank: require('../assets/images/buttons/rank.png'),
     social: require('../assets/images/buttons/social.png'),

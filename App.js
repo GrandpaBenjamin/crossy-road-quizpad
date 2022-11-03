@@ -30,8 +30,8 @@ export default function App() {
 
 function AssetLoading({ children }) {
   const [fontLoaded] = useFonts({
-    retro: require("./assets/fonts/retro.ttf"),
-    retro_menu: require("./assets/fonts/retro-og.ttf")
+    retro: require("./assets/fonts/pixelmix.ttf"),
+    retro_menu: require("./assets/fonts/new-retro.ttf")
   });
 
   const [audioLoaded, audioLoadingError] = useResolvedValue(() =>
