@@ -25,6 +25,7 @@ import { globalVars } from "../src/GlobalVars";
 import { getCurrentQuestionAnswers, getAnswerAtID, getCurrentQuestion, question, answersVisible, setAnswersVisible, decreaseScore, setLetterDetected, letMeRender } from "../src/quizManager";
 import Images from "../src/Images";
 import Lives from "../components/LivesText";
+import Colors from "../src/Colors";
 
 var menuButtons = [Images.button.menu,Images.button.menu_flip];
 var currentMenuButton = 0;
@@ -306,7 +307,7 @@ class Game extends Component {
   renderExplanationText(){
     let content = [];
     if (letMeRender){
-      content.push(<View key={0} pointerEvents="none" style={[styleTopText.container]}><Text style={[styleTopText.answer, textShadow]}>{`collect the correct answer`}</Text></View>);
+      content.push(<View key={0} pointerEvents="none" style={[styleTopText.container]}><Text style={[styleTopText.answer]}>{`collect the correct answer`}</Text></View>);
     }
     return content;
   }
@@ -477,15 +478,24 @@ const styleTopText= StyleSheet.create({
     marginLeft:"auto",
     marginRight:"auto",
     left:(Dimensions.get('window').width/2)-(getTextWidth(`collect the correct answer`)/2),
+
+    width: "fit-content",
+    height: "fit-content",
+    border: "5px solid black",
+    marginTop: "2px",
+    //marginLeft: "10px",
+    backgroundColor: "royalblue",
+    textAlign: "left",
   },
   answer: {
     color: 'white',
     fontFamily: 'retro',
     fontSize: 32,
     marginTop: 16,
-    backgroundColor: 'transparent',
+    marginBottom: 16,
+    marginLeft: 10,
     letterSpacing: '0.15em',
-  }
+  },
 });
 
 const bannerStyle = StyleSheet.create({
